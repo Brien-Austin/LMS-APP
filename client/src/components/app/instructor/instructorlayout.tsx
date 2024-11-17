@@ -31,7 +31,7 @@ const InstructorLayout = ({ children }: { children: React.ReactNode }) => {
       dispatch(setIsIntructorAuthenticated())
       
     }
-    if(instructorAt === ""){
+    if( instructorAt === null){
       dispatch(setIsIntructorAuthenticated())
     }
   }, [instructorAt, navigate,dispatch]);

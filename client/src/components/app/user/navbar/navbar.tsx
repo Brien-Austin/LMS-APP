@@ -14,6 +14,7 @@ const NavBar = () => {
     cleanUserTokens()
     navigate(0)
   }
+  // console.log('Profile',user?.profileUrl)
 
   return (
     <>
