@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 
 
 export function useAuth() {
-  const { data: userData, status: queryStatus } = useQuery<User>({
+  const { data: userData, status: queryStatus , isError: isInstructorError } = useQuery<User>({
     queryKey : ['fetch-user'],
     queryFn :     async()=>{
         const response = await appApiClient.get(PROFILE_URL);
@@ -35,6 +35,7 @@ export function useAuth() {
   const isAuthenticated = !!user;
   const isLoading = queryStatus === 'loading';
   const isError = queryStatus === 'error';
+  const instructorNotLoggedIn = isInstructorError
 
-  return { user, isAuthenticated,instructor, isLoading, isError ,isInstructorLoading};
+  return { user, isAuthenticated,instructorNotLoggedIn,instructor, isLoading, isError ,isInstructorLoading};
 }

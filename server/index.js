@@ -7,6 +7,7 @@ const http = require("http");
 const session = require("express-session");
 const {createClient} = require("redis")
 const authRouter = require("./routes/auth.route");
+const paymentRouter = require("./routes/payment.route");
 const userRouter = require("./routes/user.route");
 const adminRouter = require("./routes/admin.route");
 const instructorRouter = require("./routes/instructor.route");
@@ -21,7 +22,7 @@ const {
 } = require("./utils/jwt");
 const cookieparser = require("cookie-parser");
 const upload = require("./config/upload");
-const { imageUploadHandler } = require("./controller/course.controller");
+const { imageUploadHandler, paymentHandler } = require("./controller/course.controller");
 const { connectRedisCache } = require("./config/redis-cache");
 
 
@@ -104,6 +105,13 @@ app.use("/api/v1/instructor", verifyInstructorToken, instructorRouter);
 // image uploader
 
 app.post("/api/v1/admin/image", upload.single("file"), imageUploadHandler);
+// image uploader
+
+app.post("/api/v1/instructor/image", upload.single("file"), imageUploadHandler);
+
+
+//payments 
+app.post("/api/v1/payment",verifyToken,paymentRouter)
 
 
 // video uploader

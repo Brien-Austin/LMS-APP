@@ -22,6 +22,9 @@ export const registerShcema = z.object({
 
 
 export const courseSchema = z.object({
+    price : z.coerce.number({
+        message : "Price is required"
+    }).min(0,{message : "Please enter a price"}),
     title : z.string({
         message : "Course title is required"
     }).min(10,{message : "Course title should be atleast 10 characters"}),

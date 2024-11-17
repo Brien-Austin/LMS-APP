@@ -1,6 +1,7 @@
 const { Chapters, Questions } = require("../models/chapter.model");
 const { Courses } = require("../models/course.model");
 
+
 const Instructor = require("../models/instructor.model");
 const { loginUser } = require("../services/auth.service");
 const { compareValue, hashValue } = require("../utils/bcrypt");
@@ -319,6 +320,10 @@ async function publishCourse(req, res) {
       message: "Internal Server Error",
     });
   }
+}
+
+async function imageUploadHandler() {
+
 }
 
 //

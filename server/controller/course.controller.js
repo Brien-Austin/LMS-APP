@@ -6,7 +6,7 @@ const Instructor = require("../models/instructor.model");
 
 //course creation
 async function createCourseHandler(req, res) {
-  const { title, imageurl, description, tags , categoryId } = req.body;
+  const { title, imageurl, description,price, tags , categoryId } = req.body;
   try {
     const instructor = await Instructor.findById(req.instructor._id);
     if (!instructor.canCreateCourse) {
@@ -18,11 +18,12 @@ async function createCourseHandler(req, res) {
         },
       });
     }
-    const course = await Course.create({
+    const course = await Courses.create({
       title,
       imageurl,
       description,
       tags,
+      price,
       instructor: req.instructor._id,
       category : categoryId
     });
@@ -129,10 +130,24 @@ async function imageUploadHandler(req, res) {
     });
   }
 
+  
+
+
+
+
   const filePath = req.file.path;
   res.json({
     url: filePath,
   });
+}
+
+
+async function paymentHandler() {
+  try {
+    
+  } catch (error) {
+    
+  }
 }
 
 async function uploadNotes() {
@@ -158,5 +173,6 @@ module.exports = {
   imageUploadHandler,
   getCourses,
   getCourseById,
-  createCategory
+  createCategory,
+  paymentHandler
 };

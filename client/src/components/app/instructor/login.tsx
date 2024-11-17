@@ -47,6 +47,7 @@ const InstructorLogin:React.FC<InstructorLoginProps> = ({setAuthState}) => {
          
          },1000)
         }
+        router(0)
 
         console.log(values)
         

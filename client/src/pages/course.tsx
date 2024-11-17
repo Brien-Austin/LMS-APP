@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Image } from 'lucide-react';
+
 import ChaptersList from '@/components/app/user/course/chapterslist';
 import { Course as CourseType } from '@/types/api-return';
 import appApiClient from '@/utils/auth';
@@ -25,7 +25,7 @@ const Course: React.FC = () => {
       return response.data.course;
     }
   });
-
+console.log(course)
   async function handleEnroll(free: boolean | undefined) {
     try {
       if (free) {
@@ -88,9 +88,9 @@ const Course: React.FC = () => {
         </h1>
       </header>
 
-      <figure className='mt-4'>
-        <div className='w-full h-48 border border-neutral-200 shadow-sm rounded-2xl bg-white flex justify-center items-center relative'>
-         <img src={course?.imageurl}  className="h-full rounded-lg"alt="" />
+      <figure className='mt-4 sm:block lg:flex lg:items-center space-x-16 '>
+        <div className='sm:w-full sm:h-48 border lg:w-3/5 lg:h-72 border-neutral-200 shadow-sm rounded-2xl bg-white flex justify-center items-center relative'>
+         <img src={course?.imageurl}  className="h-full w-full rounded-lg object-cover"alt="" />
           <div className="absolute top-0 left-0">
             <div className="flex flex-wrap items-center space-x-2 p-2">
               <div className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
@@ -111,38 +111,142 @@ const Course: React.FC = () => {
             </div>
           </div>
 
-          <Image className='text-neutral-400' size={30} aria-label="Course image placeholder" />
+          
         </div>
+
+        <section className="mt-4">
+        <h2 className="sr-only">Course Description</h2>
+        <p className="sm:hidden lg:block lg:text-neutral-500 text-lg font-medium">
+          {course?.description}
+        </p>
+      </section>
         <figcaption className="sr-only">Course cover image</figcaption>
       </figure>
 
-      <section className="mt-4">
+      <section className="mt-4 smn:block lg:hidden">
         <h2 className="sr-only">Course Description</h2>
         <p className="text-sm text-neutral-700 font-medium">
           {course?.description}
         </p>
       </section>
 
-      <section className='mt-6'>
-        <h2 className='text-lg font-bold text-neutral-600'>
+      <section className='sm:mt-6 lg:mt-8'>
+        <h2 className='sm:text-lg lg:text-xl font-bold text-neutral-600'>
           Chapters
         </h2>
        {course?.chapters &&  <ChaptersList chapters={course?.chapters} />}
       </section>
 
-      <nav className="fixed bottom-0 bg-white w-full h-16 z-50 border shadow-sm p-2 border-neutral-100 left-0 flex justify-center items-center">
-       {isUserEnrolled ? <div className='w-full px-3 py-2 text-white text-center rounded-full bg-gradient-to-r from-purple-600 to-purple-700 via-purple-500'>
-        Continue Learning </div> :  <div className="flex justify-between w-full max-w-md space-x-2">
-          <button onClick={() => navigate(-1)} className="px-3 py-2 w-full border ring-1 ring-purple-500 rounded-full">
-            <span className="text-purple-700 font-semibold">Back</span>
+      <nav className="fixed bottom-0 bg-white/90 backdrop-blur-sm w-full h-auto z-50 border-t shadow-lg left-0">
+  {isUserEnrolled ? (
+    <div className="container mx-auto px-4 py-3 sm:py-4 lg:py-5">
+      <div className="w-full max-w-xl mx-auto">
+        <button className="w-full px-4 py-3 lg:py-4 text-white text-center rounded-full bg-gradient-to-r from-purple-600 to-purple-700 via-purple-500 hover:shadow-md transition-all duration-300 cursor-pointer font-medium flex items-center justify-center space-x-2 group">
+          <svg 
+            className="w-5 h-5 group-hover:translate-x-1 transition-transform" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" 
+            />
+          </svg>
+          <span className="text-base lg:text-lg">Continue Learning</span>
+        </button>
+      </div>
+    </div>
+  ) : (
+    <div className="container mx-auto">
+      {/* Mobile View (sm) */}
+      <div className="lg:hidden px-4 py-3">
+        <div className="flex flex-col space-y-2">
+          <button
+            onClick={() => handleEnroll(course?.isFree)}
+            className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"
+          >
+            {course?.price == 0 ? (
+              <>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7v9a2 2 0 01-2 2H9a2 2 0 01-2-2V7m3 9h3m-3 0h-3m4.5-11l2 2m-2-2l-2 2" />
+                </svg>
+                <span>Enroll Now</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span onClick={()=>{}}>Get Premium</span>
+              </>
+            )}
           </button>
-          <button onClick={()=>handleEnroll(course?.isFree)} className="px-3 py-2 w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-full">
-           {
-            course?.isFree ? <h1>Enroll</h1> : "Buy this course"
-           }
+          <button
+            onClick={() => navigate(-1)}
+            className="w-full px-6 py-3 border-2 border-purple-500 rounded-full hover:bg-purple-50 transition-colors duration-300 flex items-center justify-center space-x-2"
+          >
+            <svg className="w-4 h-4 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span className="text-purple-700 font-medium">Back</span>
           </button>
-        </div> }
-      </nav>
+        </div>
+      </div>
+
+      {/* Desktop View (lg) */}
+      <div className="hidden lg:block px-6 py-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="px-6 py-3 border-2 border-purple-500 rounded-full hover:bg-purple-50 transition-colors duration-300 flex items-center justify-center space-x-2 group"
+            >
+              <svg 
+                className="w-4 h-4 text-purple-700 group-hover:-translate-x-1 transition-transform" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span className="text-purple-700 font-medium">Back to Courses</span>
+            </button>
+            {course?.price && !course?.isFree && (
+              <div className="text-lg font-semibold text-gray-900">
+                ${course.price}
+              </div>
+            )}
+          </div>
+          
+          <button
+            onClick={() => handleEnroll(course?.isFree)}
+            className="px-8 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-medium rounded-full hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-3 min-w-[200px]"
+          >
+            {course?.isFree ? (
+              <>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7v9a2 2 0 01-2 2H9a2 2 0 01-2-2V7m3 9h3m-3 0h-3m4.5-11l2 2m-2-2l-2 2" />
+                </svg>
+                <span className="text-lg">Enroll Now</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span className="text-lg">Buy this course</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
+</nav>
+
     </article>}
    </main>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import clsx from "clsx";
 
@@ -9,25 +9,36 @@ import { AuthState } from "@/types/auth/userauth";
 import InstructorRegister from "./register";
 import InstructorLogin from "./login";
 import InstructorSideBar from "../user/navbar/instructorsidebar";
-import {  useSidebar } from "@/context/sidebarcontext";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { setIsIntructorAuthenticated } from "@/store/slice/auth";
+
+
 const InstructorLayout = ({ children }: { children: React.ReactNode }) => {
-  const { toggle ,setToggle} = useSidebar();
+  const toggle = useAppSelector((state)=>state.layoutSlice.isInstructorSideBarOpened)
+  
   
   const [authState, setAuthState] = React.useState<AuthState>("Register");
-  const [notLoggedIn, setNotLoggedIn] = useState<boolean>(false);
+
+ 
   const instructorAt = getInstructorAccessToken();
   console.log(instructorAt);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
+  const {isInstructorAuthenticated} = useAppSelector((state)=>state.authentication)
 
   useEffect(() => {
-    if (!instructorAt) {
-      setNotLoggedIn(true);
+    if (instructorAt) {
+      dispatch(setIsIntructorAuthenticated())
+      
     }
-  }, [instructorAt, navigate]);
+    if(instructorAt === ""){
+      dispatch(setIsIntructorAuthenticated())
+    }
+  }, [instructorAt, navigate,dispatch]);
   return (
     <>
 
-        {notLoggedIn ? (
+        {!isInstructorAuthenticated && !instructorAt ? (
           <div>
             {authState === "Register" ? (
               <InstructorRegister setAuthState={setAuthState} />
@@ -37,7 +48,7 @@ const InstructorLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
         ) : (
           <div>
-            <InstructorSideBar toggle={toggle} setToggle={setToggle} />
+            <InstructorSideBar toggle={toggle}  />
 
             <div className={clsx("ml-20 transition px-5", toggle && "ml-56 ")}>
               {children}

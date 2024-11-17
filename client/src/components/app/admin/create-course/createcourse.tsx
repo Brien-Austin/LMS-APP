@@ -4,10 +4,11 @@ import { ChevronLeft, ImageUp, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useEffect } from "react";
-import { apiClient } from "@/utils/api";
+
 import { CREATE_COURSE, IMAGE_UPLOAD } from "@/utils/constants";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
+import instructorApiClient from "@/utils/instructorauth";
 
 interface CreateCourseProps {
   create: boolean;
@@ -18,7 +19,7 @@ const uploadImage = async (file: File): Promise<string> => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await apiClient.post(IMAGE_UPLOAD, formData);
+  const response = await instructorApiClient.post(IMAGE_UPLOAD, formData);
 
   if (response.status !== 200) {
     throw new Error("Image upload failed");
@@ -48,7 +49,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
   const description = watch("description");
   const domain = watch("domain");
 
-  // Effect to validate form fields
+
   useEffect(() => {
     const isFormValid = !!(title && description && domain && imageUrl !== ""); // Add more validation as necessary
     setIsValid(isFormValid);
@@ -72,6 +73,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
   const onSubmit = async (values: z.infer<typeof courseSchema>) => {
     const courseData = {
       title: values.title,
+      price : values.price,
       imageurl: values.imageurl,
       description: values.description,
       tags : {
@@ -84,7 +86,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
 
     try {
       setIsLoading(true);
-      const response = await apiClient.post(CREATE_COURSE, courseData);
+      const response = await instructorApiClient.post(CREATE_COURSE, courseData);
       if (response.status === 201) {
         toast.success("Course Created successfully");
       }
@@ -110,7 +112,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
       try {
         const imageUrl = await uploadImage(file);
         setImageUrl(imageUrl);
-        form.setValue("imageurl", imageUrl); // Set the image URL directly in the form state
+        form.setValue("imageurl", imageUrl); 
         setImageLoad(false);
       } catch (error) {
         console.error("Error uploading image:", error);
@@ -157,6 +159,23 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
               )}
             </div>
 
+              {/* Price */}
+              <div className="flex flex-col space-y-2">
+              <label htmlFor="price" className="text-sm ">
+                <span className="font-semibold text-purple-600"> Price </span> of
+                the Course
+              </label>
+              <input autoFocus
+                id="price"
+                placeholder="0 / 500"
+                type="text"
+                {...form.register("price")}
+                className="border w-3/5 px-3 py-2 border-neutral-400 focus:outline-purple-500 rounded-md transition delay-200 "
+              />
+              {errors.price && (
+                <p className="text-xs text-red-500">{errors.price.message}</p>
+              )}
+            </div>
             {/* Description */}
             <div className="flex flex-col space-y-2">
               <label htmlFor="description" className="text-sm ">

@@ -38,6 +38,7 @@ profileUrl: string
 export interface Course {
     _id : string
   title: string;
+  
   instructor: Instructor;
   imageurl?: string;
   price?: number;
