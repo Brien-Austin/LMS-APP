@@ -1,19 +1,11 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-
 import useAdminRoutes from '@/hooks/useAdminRoutes';
 import SideBarItems from './sidebaritems';
 
-
-interface SideBarProps {
-    toggle: boolean;
-    setToggle: (toggle: boolean) => void;
-}
-
-const SideBar: React.FC<SideBarProps> = ({ toggle, setToggle }) => {
+const SideBar = ({ toggle, setToggle }) => {
     const routes = useAdminRoutes();
     return (
         <motion.div
@@ -28,12 +20,19 @@ const SideBar: React.FC<SideBarProps> = ({ toggle, setToggle }) => {
                 </div>
             </div>
 
-            <div className="flex flex-col   items-center mt-16">
+            <div className="flex flex-col items-center mt-16">
                 {
-                    routes.map((route)=>
-                    <SideBarItems  key={route.label} route={route.route} icon={route.icon} isActive={route.isActive} label={route.label} open={toggle}/>)
+                    routes.map((route) =>
+                        <SideBarItems
+                            key={route.label}
+                            route={route.route}
+                            icon={route.icon}
+                            isActive={route.isActive}
+                            label={route.label}
+                            open={toggle}
+                        />
+                    )
                 }
-
             </div>
         </motion.div>
     );

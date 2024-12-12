@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Chapter:React.FC = () => {
+const Chapter = () => {
   return (
     <div>Chapter</div>
   )

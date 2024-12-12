@@ -1,36 +1,14 @@
-
 import { cn } from '@/lib/utils'
 import { ChevronDown, ChevronUp, LucideIcon } from 'lucide-react'
-
-
 import React, { useState } from 'react'
 import { IconType } from 'react-icons'
 import { Link, useLocation } from 'react-router-dom'
 
-interface SideBarChildren {
-  route: string
-  isActive?: boolean
-  label: string,
-  icon: LucideIcon | IconType
-}
-
-interface SideBarItemProps {
-  route: string
-  isActive?: boolean
-  label: string,
-  icon: LucideIcon | IconType,
-  childSideOptions?: SideBarChildren[]
-  open: boolean
-}
-
-const SideBarItems: React.FC<SideBarItemProps> = ({
-  route: href, label, isActive, icon: Icon, open, childSideOptions
-}) => {
+const SideBarItems = ({ route: href, label, isActive, icon: Icon, open, childSideOptions }) => {
   const pathname = useLocation().pathname
-  const [showChild, setShowChild] = useState<boolean>(false)
+  const [showChild, setShowChild] = useState(false)
 
   const handleShowChildItems = () => setShowChild(!showChild)
-  
 
   return (
     <>

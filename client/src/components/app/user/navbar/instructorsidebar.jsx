@@ -1,20 +1,15 @@
-import React, {  } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-import SideBarItems from './sidebaritems';
+import SideBarItems from './sidebaritems.jsx';
 import useInstructorRoutes from '@/hooks/useInstructorRoutes';
 import { useAppDispatch } from '@/store/store';
 import { setIsSideBarOpened } from '@/store/slice/layouts/layout';
 
-interface SideBarProps {
-    toggle: boolean;
-  
-}
-
-const InstructorSideBar: React.FC<SideBarProps> = ({ toggle }) => {
+const InstructorSideBar = ({ toggle }) => {
     const routes = useInstructorRoutes();
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
     return (
         <motion.div

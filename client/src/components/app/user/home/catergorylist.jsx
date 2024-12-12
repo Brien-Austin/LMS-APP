@@ -1,20 +1,16 @@
-import {  FcDataConfiguration, FcDataEncryption, FcDecision,  FcMindMap, FcMultipleDevices,  FcScatterPlot, FcServices, FcSettings } from 'react-icons/fc';
-import { IconType } from 'react-icons/lib';
+import { FcDataConfiguration, FcDataEncryption, FcDecision, FcMindMap, FcMultipleDevices, FcScatterPlot, FcServices, FcSettings } from 'react-icons/fc';
 import Category from './category';
 
 const CategoryList = () => {
-  const iconMap: Record<
-    "AI" | "FullStack" | "DataScience" | "DataEngineering" | "CloudComputing" | "ML" | "DevOps" | "Cybersecurity", 
-    IconType
-  > = {
-    FullStack : FcMultipleDevices ,
+  const iconMap = {
+    FullStack: FcMultipleDevices,
     AI: FcDecision,
     DataScience: FcScatterPlot,
     DataEngineering: FcDataConfiguration,
     CloudComputing: FcServices,
     ML: FcMindMap,
     DevOps: FcSettings,
-    Cybersecurity: FcDataEncryption
+    Cybersecurity: FcDataEncryption,
   };
 
   return (

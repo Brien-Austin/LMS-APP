@@ -4,16 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/store/store';
 import { setCurrentCourse } from '@/store/slice/course';
 
-interface MyCourseListProps {
-  id: string;
-  progress: number;
-  title: string;
-  chapters: number | undefined;
-  imageUrl: string;
-  description: string;
-}
-
-const MyCoursesList: React.FC<MyCourseListProps> = ({
+const MyCoursesList = ({
   id,
   progress,
   title,
@@ -21,14 +12,16 @@ const MyCoursesList: React.FC<MyCourseListProps> = ({
   chapters,
   imageUrl
 }) => {
-    const navigate = useNavigate()
-    const dispatch = useAppDispatch()
-    const handleCourseClick = () =>{
-      dispatch(setCurrentCourse(id))
-      navigate(`/mycourses/course/${id}`)
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  
+  const handleCourseClick = () => {
+    dispatch(setCurrentCourse(id));
+    navigate(`/mycourses/course/${id}`);
+  };
+  
+  const totalProgres = chapters && Math.round(((progress / chapters) * 100));
 
-    }
-    const totalProgres =chapters &&  Math.round(((progress/chapters) * 100))
   return (
     <div key={id} className="sm:w-full lg:w-4/5 lg:mx-auto bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300">
       <div className="flex flex-col md:flex-row h-full">
@@ -84,7 +77,10 @@ const MyCoursesList: React.FC<MyCourseListProps> = ({
 
           {/* Continue  */}
           <div className="mt-4">
-            <button onClick={handleCourseClick} className="group w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-600 hover:to-purple-700 transition-all duration-300 flex items-center justify-center">
+            <button 
+              onClick={handleCourseClick} 
+              className="group w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-600 hover:to-purple-700 transition-all duration-300 flex items-center justify-center"
+            >
               <span>Continue Learning</span>
               <PlayCircle className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
             </button>
