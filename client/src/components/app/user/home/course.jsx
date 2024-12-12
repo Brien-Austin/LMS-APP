@@ -1,7 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { setCurrentCourse } from "@/store/slice/course";
 import { useAppDispatch } from "@/store/store";
-
 import { Image } from "lucide-react";
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";

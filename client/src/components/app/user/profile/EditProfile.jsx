@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { editProfileSchema } from "../../../../types/auth/userauth";
 
-
 const EditProfile = ({ age, contactNumber, username }) => {
   const router = useNavigate();
   const [loading, setIsLoading] = useState(false);
