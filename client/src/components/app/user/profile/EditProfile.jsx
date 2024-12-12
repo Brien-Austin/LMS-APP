@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { editProfileSchema } from "@/types/auth/userauth";
+
 import appApiClient from "@/utils/auth";
 import { USER_COMPLETE_PROFILE } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { editProfileSchema } from "../../../../types/auth/userauth";
+
 
 const EditProfile = ({ age, contactNumber, username }) => {
   const router = useNavigate();

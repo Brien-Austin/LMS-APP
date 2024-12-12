@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
-import { ChevronDown, ChevronUp, LucideIcon } from 'lucide-react'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import React, { useState } from 'react'
-import { IconType } from 'react-icons'
+
 import { Link, useLocation } from 'react-router-dom'
 
 const SideBarItems = ({ route: href, label, isActive, icon: Icon, open, childSideOptions }) => {

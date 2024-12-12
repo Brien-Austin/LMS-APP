@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { setCurrentTab } from "@/store/slice/course";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { LucideIcon } from "lucide-react";
+
 import React from "react";
 
 const NavItems = ({ menu, icon: Icon }) => {

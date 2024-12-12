@@ -1,13 +1,6 @@
 import React from 'react';
 
-interface PopoverProps {
-  title: string;
-  children: React.ReactNode
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const Popover: React.FC<PopoverProps> = ({ title, children, isOpen, onClose }) => {
+const Popover = ({ title, children, isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (

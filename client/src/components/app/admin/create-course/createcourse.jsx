@@ -10,12 +10,7 @@ import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 import instructorApiClient from "@/utils/instructorauth";
 
-interface CreateCourseProps {
-  create: boolean;
-  setCreate: (create: boolean) => void;
-}
-
-const uploadImage = async (file: File): Promise<string> => {
+const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
@@ -29,33 +24,31 @@ const uploadImage = async (file: File): Promise<string> => {
   return data.url;
 };
 
-const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
-  const [imageUrl , setImageUrl] = useState<string>("")
-  const [isValid, setIsValid] = useState<boolean>(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [languages, setTags] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [imageUploadLoad, setImageLoad] = useState<boolean>(false);
+const CreateCourse = ({ setCreate }) => {
+  const [imageUrl, setImageUrl] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [languages, setTags] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [imageUploadLoad, setImageLoad] = useState(false);
 
-  const form = useForm<z.infer<typeof courseSchema>>({
+  const form = useForm({
     resolver: zodResolver(courseSchema),
   });
 
-  const { watch ,reset} = form;
-  const {errors} = form.formState
-
+  const { watch, reset } = form;
+  const { errors } = form.formState;
 
   const title = watch("title");
   const description = watch("description");
   const domain = watch("domain");
 
-
   useEffect(() => {
-    const isFormValid = !!(title && description && domain && imageUrl !== ""); // Add more validation as necessary
+    const isFormValid = !!(title && description && domain && imageUrl !== "");
     setIsValid(isFormValid);
-  }, [title, description, domain,imageUrl]);
+  }, [title, description, domain, imageUrl]);
 
-  const handleTagInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleTagInput = (event) => {
     if (event.key === 'Enter' && event.currentTarget.value.trim() !== '') {
       event.preventDefault();
       const newTag = event.currentTarget.value.trim();
@@ -66,22 +59,20 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
     }
   };
 
-  const removeTag = (tagToRemove: string) => {
+  const removeTag = (tagToRemove) => {
     setTags(languages.filter(language => language !== tagToRemove));
   };
 
-  const onSubmit = async (values: z.infer<typeof courseSchema>) => {
+  const onSubmit = async (values) => {
     const courseData = {
       title: values.title,
-      price : values.price,
+      price: values.price,
       imageurl: values.imageurl,
       description: values.description,
-      tags : {
-        domain : values.domain,
-        languages : languages.map((language) => ({ name: language }))
+      tags: {
+        domain: values.domain,
+        languages: languages.map((language) => ({ name: language }))
       }
-     
-
     };
 
     try {
@@ -90,9 +81,8 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
       if (response.status === 201) {
         toast.success("Course Created successfully");
       }
-      reset()
-      setImageUrl("")
-
+      reset();
+      setImageUrl("");
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -101,9 +91,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
     }
   };
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileChange = async (event) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       setImageFile(file);
@@ -112,7 +100,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
       try {
         const imageUrl = await uploadImage(file);
         setImageUrl(imageUrl);
-        form.setValue("imageurl", imageUrl); 
+        form.setValue("imageurl", imageUrl);
         setImageLoad(false);
       } catch (error) {
         console.error("Error uploading image:", error);
@@ -129,9 +117,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
         </div>
       )}
       <button
-        onClick={() => {
-          setCreate(false);
-        }}
+        onClick={() => setCreate(false)}
         className="border px-3 py-2 bg-purple-50 shadow-sm rounded-md text-neutral-600 text-sm flex items-center space-x-2"
       >
         <ChevronLeft size={18} />
@@ -147,7 +133,8 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
                 <span className="font-semibold text-purple-600"> Name</span> of
                 the Course
               </label>
-              <input autoFocus
+              <input
+                autoFocus
                 id="title"
                 placeholder="MERN Stack , React Begin . . ."
                 type="text"
@@ -159,13 +146,14 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
               )}
             </div>
 
-              {/* Price */}
-              <div className="flex flex-col space-y-2">
+            {/* Price */}
+            <div className="flex flex-col space-y-2">
               <label htmlFor="price" className="text-sm ">
                 <span className="font-semibold text-purple-600"> Price </span> of
                 the Course
               </label>
-              <input autoFocus
+              <input
+                autoFocus
                 id="price"
                 placeholder="0 / 500"
                 type="text"
@@ -256,21 +244,20 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ setCreate }) => {
               onChange={handleFileChange}
               className="hidden"
             />
-           {
-            imageUrl !== "" ? <div className="w-[30%] h-64 rounded-md relative">
-              <img src={imageUrl} alt={'Image'} className="object-cover absolute h-full w-full rounded-md"  /> </div> :  <div
-            className="w-[30%] border h-36 rounded-md bg-purple-400 backdrop-blur-md shadow-sm border-dotted p-2 border-neutral-400 flex justify-center items-center text-white cursor-pointer"
-            onClick={() => document.getElementById("fileInput")?.click()}
-          >
-           <div className="backdrop-blur-md border-white/20 w-full flex items-center justify-center h-full  rounded-lg bg-white/30">
-           <ImageUp size={40} /></div>
-            {imageFile ? (
-           <></>
+            {imageUrl !== "" ? (
+              <div className="w-[30%] h-64 rounded-md relative">
+                <img src={imageUrl} alt={'Image'} className="object-cover absolute h-full w-full rounded-md" />
+              </div>
             ) : (
-              <span className=""></span>
+              <div
+                className="w-[30%] border h-36 rounded-md bg-purple-400 backdrop-blur-md shadow-sm border-dotted p-2 border-neutral-400 flex justify-center items-center text-white cursor-pointer"
+                onClick={() => document.getElementById("fileInput")?.click()}
+              >
+                <div className="backdrop-blur-md border-white/20 w-full flex items-center justify-center h-full  rounded-lg bg-white/30">
+                  <ImageUp size={40} />
+                </div>
+              </div>
             )}
-          </div>
-           }
           </div>
 
           <input type="hidden" {...form.register("imageurl")} />

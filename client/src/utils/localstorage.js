@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import Cookie  from "js-cookie";
-
+import Cookie from "js-cookie";
 
 // Admin Token Management
 export function getAdminAccessToken() {
@@ -12,11 +9,11 @@ export function getAdminRefreshToken() {
   return localStorage.getItem('adminRefreshToken');
 }
 
-export function setAdminAccessToken(token: any) {
+export function setAdminAccessToken(token) {
   localStorage.setItem('adminAccessToken', token);
 }
 
-export function setAdminRefreshToken(token: any) {
+export function setAdminRefreshToken(token) {
   localStorage.setItem('adminRefreshToken', token);
 }
 
@@ -49,8 +46,6 @@ export function LoadCookie() {
   }
 }
 
-
-
 export function cleanAdminTokens() {
   localStorage.removeItem('adminAccessToken');
   localStorage.removeItem('adminRefreshToken');
@@ -65,11 +60,11 @@ export function getUserRefreshToken() {
   return localStorage.getItem('userRefreshToken');
 }
 
-export function setUserAccessToken(token: any) {
+export function setUserAccessToken(token) {
   localStorage.setItem('userAccessToken', token);
 }
 
-export function setUserRefreshToken(token: any) {
+export function setUserRefreshToken(token) {
   localStorage.setItem('userRefreshToken', token);
 }
 
@@ -87,11 +82,11 @@ export function getInstructorRefreshToken() {
   return localStorage.getItem('instructorRefreshToken');
 }
 
-export function setInstructorAccessToken(token: any) {
+export function setInstructorAccessToken(token) {
   localStorage.setItem('instructorAccessToken', token);
 }
 
-export function setInstructorRefreshToken(token: any) {
+export function setInstructorRefreshToken(token) {
   localStorage.setItem('instructorRefreshToken', token);
 }
 

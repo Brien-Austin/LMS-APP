@@ -2,7 +2,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRoutes } from '@/hooks/useRoutes';
 import { cn } from '@/lib/utils';
 import { cleanUserTokens } from '@/utils/localstorage';
-import { LogOut, LucideIcon } from 'lucide-react';
+import { LogOut} from 'lucide-react';
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 

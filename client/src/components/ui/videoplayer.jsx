@@ -1,4 +1,3 @@
-// VideoPlayer.tsx
 import React, { useRef, useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { 
@@ -12,41 +11,30 @@ import {
 } from 'lucide-react';
 import { Slider } from './slider';
 
-interface VideoPlayerProps {
-  src: string;
-  className?: string;
-  initialCompleted: boolean;  // renamed from completed to initialCompleted
-  onTimeUpdate?: (currentTime: number, duration: number) => void;
-  onComplete?: () => void;
-  setChapterCompleted: (completed: boolean) => void; 
-}
-
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ 
+const VideoPlayer = ({ 
   src, 
   className = '',
   onTimeUpdate,
   onComplete,
-
   setChapterCompleted
 }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  const [duration, setDuration] = useState<number>(0);
-  const [volume, setVolume] = useState<number>(1);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
-  const [hasReachedThreshold, setHasReachedThreshold] = useState<boolean>(false);
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [hasReachedThreshold, setHasReachedThreshold] = useState(false);
+  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
 
-  const [showVolumeSlider, setShowVolumeSlider] = useState<boolean>(false);
-  
-  const formatTime = (timeInSeconds: number): string => {
-    const minutes: number = Math.floor(timeInSeconds / 60);
-    const seconds: number = Math.floor(timeInSeconds % 60);
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const togglePlay = (): void => {
+  const togglePlay = () => {
     if (videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause();
@@ -57,7 +45,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     }
   };
 
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
     if (videoRef.current) {
       videoRef.current.volume = newVolume;
@@ -66,19 +54,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     }
   };
 
-  const handleSeek = (newTime: number): void => {
+  const handleSeek = (newTime) => {
     if (videoRef.current) {
       videoRef.current.currentTime = newTime;
       setCurrentTime(newTime);
     }
   };
 
-  const toggleFullscreen = async (): Promise<void> => {
+  const toggleFullscreen = async () => {
     try {
       if (!document.fullscreenElement) {
         await videoRef.current?.parentElement?.requestFullscreen();
         setIsFullscreen(true);
-        console.log(isFullscreen)
       } else {
         await document.exitFullscreen();
         setIsFullscreen(false);
@@ -88,13 +75,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     }
   };
 
-  const handleFastForward = (): void => {
+  const handleFastForward = () => {
     if (videoRef.current) {
       videoRef.current.currentTime += 10;
     }
   };
 
-  const handleRewind = (): void => {
+  const handleRewind = () => {
     if (videoRef.current) {
       videoRef.current.currentTime -= 10;
     }
@@ -104,14 +91,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const video = videoRef.current;
     if (!video) return;
 
-    const handleTimeUpdate = (): void => {
+    const handleTimeUpdate = () => {
       const currentTime = video.currentTime;
       const duration = video.duration;
       
       setCurrentTime(currentTime);
       onTimeUpdate?.(currentTime, duration);
       
-      // Check completion threshold
       const completionThreshold = 0.8; // 80%
       const requiredWatchTime = duration * completionThreshold;
       
@@ -120,17 +106,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         setChapterCompleted(true);
       }
       
-      // Check if video is complete
       if (currentTime >= duration) {
         onComplete?.();
       }
     };
 
-    const handleLoadedMetadata = (): void => {
+    const handleLoadedMetadata = () => {
       setDuration(video.duration);
     };
 
-    const handleFullscreenChange = (): void => {
+    const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
 
@@ -173,7 +158,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
               max={duration}
               step={1}
               className="w-full"
-              onValueChange={(value: number[]): void => handleSeek(value[0])}
+              onValueChange={(value) => handleSeek(value[0])}
             />
             
             <div className="flex items-center justify-between">
@@ -211,7 +196,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                   onMouseLeave={() => setShowVolumeSlider(false)}
                 >
                   <button 
-                    onClick={() => handleVolumeChange({ target: { value: isMuted ? '1' : '0' } } as React.ChangeEvent<HTMLInputElement>)}
+                    onClick={() => handleVolumeChange({ target: { value: isMuted ? '1' : '0' } })}
                     className="p-1 hover:bg-white/20 rounded-full transition-colors"
                     type="button"
                   >
