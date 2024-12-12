@@ -1,19 +1,19 @@
 import CreateCourse from "@/components/app/admin/create-course/createcourse";
-import Adminlayout from "@/components/app/admin/layout/adminlayout";
 import TabHeader from "@/components/app/admin/layout/tabHeader";
+import InstructorLayout from "@/components/app/instructor/instructorlayout";
 import { ChevronRight } from "lucide-react";
 import { useState } from "react";
 
-const AdminCourses = () => {
-  const [createCourse, setCreateCourse] = useState<boolean>(false);
-  const subHeader = new Map<number,string>();
-  if(createCourse){
-    subHeader.set(1,"Create")
+const InstructorCourses = () => {
+  const [createCourse, setCreateCourse] = useState(false);
+  const subHeader = new Map();
+  if (createCourse) {
+    subHeader.set(1, "Create");
   }
 
   console.log(createCourse);
   return (
-    <Adminlayout>
+    <InstructorLayout>
       <TabHeader title="Courses" subHeader={subHeader} />
       <section>
         {createCourse ? (
@@ -27,13 +27,13 @@ const AdminCourses = () => {
               }}
               className="rounded-md px-3 py-2 bg-gradient-to-b from-purple-500 to-purple-600 text-white flex items-center gap-2"
             >
-              Create <ChevronRight size={16} />{" "}
+              Create <ChevronRight size={16} />
             </button>
           </div>
         )}
       </section>
-    </Adminlayout>
+    </InstructorLayout>
   );
 };
 
-export default AdminCourses;
+export default InstructorCourses;

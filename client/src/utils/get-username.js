@@ -1,11 +1,11 @@
-export function getUserName(email: string) {
+export function getUserName(email) {
   if (typeof email !== 'string') return null;
 
   const namePart = email.split('@')[0];
 
   return namePart
     .split('.')
-    .map(part => 
+    .map((part) =>
       part
         .replace(/\d+/g, '')
         .charAt(0)

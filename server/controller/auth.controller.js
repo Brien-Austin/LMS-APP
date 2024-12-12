@@ -1,6 +1,6 @@
 
 const Users = require("../models/user.model");
-const { createAccount, loginUser } = require("../services/auth.service");
+
 const { compareValue, hashValue } = require("../utils/bcrypt");
 const {
   generateAcessToken,

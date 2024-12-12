@@ -1,5 +1,4 @@
 import InstructorItem from "@/components/app/user/instructor/instructorItem";
-import { InstructorType } from "@/types/auth/userauth";
 import appApiClient from "@/utils/auth";
 import { FETCH_INSTRUCTORS } from "@/utils/constants";
 import { getUserName } from "@/utils/get-username";
@@ -8,9 +7,9 @@ import React from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 
-const Instructors: React.FC = () => {
+const Instructors = () => {
   const navigate = useNavigate();
-  const { data: instructors, isLoading } = useQuery<InstructorType[]>({
+  const { data: instructors, isLoading } = useQuery({
     queryKey: "Fetch Instructors",
     queryFn: async () => {
       const response = await appApiClient.get(FETCH_INSTRUCTORS);
@@ -23,12 +22,12 @@ const Instructors: React.FC = () => {
 
   return (
     <main>
-      <header className="fixed top-0 w-full left-0 flex px-5 py-3 z-50 space-x-3 items-center z-50 bg-white shadow-sm   backdrop-blur-md">
+      <header className="fixed top-0 w-full left-0 flex px-5 py-3 z-50 space-x-3 items-center z-50 bg-white shadow-sm backdrop-blur-md">
         <button
           onClick={() => {
             navigate(-1);
           }}
-          className=" border border-neutral-50 shadow-sm flex justify-center items-center p-2 rounded-md text-purple-600"
+          className="border border-neutral-50 shadow-sm flex justify-center items-center p-2 rounded-md text-purple-600"
         >
           <ChevronLeft />
         </button>
@@ -36,20 +35,19 @@ const Instructors: React.FC = () => {
           <h1 className="text-lg text-purple-700 font-[700] tracking-wide">
             Instructors of Acquel
           </h1>
-          <h1 className="text-sm ">The course creators of our platform</h1>
+          <h1 className="text-sm">The course creators of our platform</h1>
         </div>
       </header>
 
-      <section className="flex  mb-20 flex-col space-y-10 px-5 mt-24">
+      <section className="flex mb-20 flex-col space-y-10 px-5 mt-24">
         {!isLoading && instructors ? (
           <>
-            {" "}
-            {instructors?.map((prof, i) => (
+            {instructors.map((prof, i) => (
               <InstructorItem
                 key={i}
-                noOfCourses={prof.courses.length!}
+                noOfCourses={prof.courses.length}
                 profileUrl={prof.profileUrl}
-                name={getUserName(prof.email)!}
+                name={getUserName(prof.email)}
                 email={prof.email}
                 verified={prof.canCreateCourse}
               />
@@ -59,11 +57,8 @@ const Instructors: React.FC = () => {
           <div className="flex flex-col space-y-10">
             <div className="w-full h-24 rounded-lg bg-neutral-50 animate-pulse" />
             <div className="w-full h-24 rounded-lg bg-neutral-50 animate-pulse" />
-
             <div className="w-full h-24 rounded-lg bg-neutral-50 animate-pulse" />
-            <div className="w-full h-24 rounded-lg bg-neutral-50 animate-pulse"/>
-
-
+            <div className="w-full h-24 rounded-lg bg-neutral-50 animate-pulse" />
             <div className="w-full h-24 rounded-lg bg-neutral-50 animate-pulse" />
           </div>
         )}

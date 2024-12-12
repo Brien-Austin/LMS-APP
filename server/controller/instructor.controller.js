@@ -3,7 +3,7 @@ const { Courses } = require("../models/course.model");
 
 
 const Instructor = require("../models/instructor.model");
-const { loginUser } = require("../services/auth.service");
+
 const { compareValue, hashValue } = require("../utils/bcrypt");
 const { generateAcessToken, generateRefreshToken } = require("../utils/jwt");
 const mongoose = require("mongoose");
