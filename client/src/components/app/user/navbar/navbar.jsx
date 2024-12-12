@@ -1,21 +1,21 @@
-import { useAuth } from '@/hooks/useAuth'
-import { useRoutes } from '@/hooks/useRoutes'
-import { cn } from '@/lib/utils'
-import { cleanUserTokens } from '@/utils/localstorage'
-import { LogOut, LucideIcon } from 'lucide-react'
-import React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '@/hooks/useAuth';
+import { useRoutes } from '@/hooks/useRoutes';
+import { cn } from '@/lib/utils';
+import { cleanUserTokens } from '@/utils/localstorage';
+import { LogOut, LucideIcon } from 'lucide-react';
+import React from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
-  const routes = useRoutes()
-  const {user} = useAuth()
-  const navigate = useNavigate()
+  const routes = useRoutes();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  
   async function logOut() {
-    cleanUserTokens()
-    navigate(0)
+    cleanUserTokens();
+    navigate(0);
   }
-  // console.log('Profile',user?.profileUrl)
-
+  
   return (
     <>
       {/* Desktop Sidebar */}
@@ -29,12 +29,10 @@ const NavBar = () => {
           {
             user?.email && user.profileUrl ?  <div className='flex items-center space-x-3 '>
               <img src={user.profileUrl} className='w-full h-full rounded-full flex-shrink-0' alt="" />
-              
               <div className="flex items-start flex-col space-y-1">
                 <h1 className='text-[16px] text-neutral-600 line-clamp-1 w-28'>{user.username}</h1>
                 <button onClick={logOut} className='text-xs flex items-center text-neutral-600'> <LogOut size={14}/>Logout</button>
               </div>
-            
             </div> : <div></div>
           }
         </div>
@@ -49,18 +47,11 @@ const NavBar = () => {
         </section>
       </nav>
     </>
-  )
+  );
 }
 
-interface NavItemProps {
-  label: string,
-  route: string,
-  icon: LucideIcon
-}
-
-// Mobile Bottom Nav Items
-const NavItems: React.FC<NavItemProps> = ({  route, icon: Icon }) => {
-  const pathname = useLocation()
+const NavItems = ({ route, icon: Icon }) => {
+  const pathname = useLocation();
   const isActive = pathname.pathname === route;
 
   return (
@@ -84,8 +75,7 @@ const NavItems: React.FC<NavItemProps> = ({  route, icon: Icon }) => {
   );
 }
 
-// Desktop Sidebar Items
-const SideBarItems: React.FC<NavItemProps> = ({ label, route, icon: Icon }) => {
+const SideBarItems = ({ label, route, icon: Icon }) => {
   const pathname = useLocation();
   const isActive = pathname.pathname === route;
 
@@ -111,4 +101,4 @@ const SideBarItems: React.FC<NavItemProps> = ({ label, route, icon: Icon }) => {
   );
 };
 
-export default NavBar
+export default NavBar;

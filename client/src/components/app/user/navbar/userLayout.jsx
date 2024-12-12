@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import NavBar from './navbar';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const UserLayout = ({ children }: { children: React.ReactNode }) => {
+const UserLayout = ({ children }) => {
   const router = useNavigate();
   const location = useLocation();
 
